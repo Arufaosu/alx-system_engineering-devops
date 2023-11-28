@@ -1,21 +1,9 @@
 #!/bin/bash
-#
+# installs nginx
 
-sudo apt-get update
+sudo apt-get -y update
+sudo apt-get -y install nginx
+echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
+sudo nginx -t
 
-sudo apt-get install -y nginx
-
-echo "Hello World!" | sudo tee /var/www/html/index.html
-echo "server {
-    listen 80;
-    server_name localhost;
-
-    location / {
-        root /var/www/html;
-        index index.html;
-    }
-}" | sudo tee /etc/nginx/sites-available/default
-
-sudo /etc/init.d/nginx restart
-
-echo "Nginx installed"
+sudo service nginx start
