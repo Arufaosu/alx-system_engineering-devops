@@ -1,0 +1,27 @@
+#!/bin/bash
+# redirects to another page
+
+if ! command -v nginx &> /dev/null; then
+    # If not installed, install Nginx
+    sudo apt-get update > /dev/null 2>&1
+    sudo apt-get install -y nginx > /dev/null 2>&1
+fi
+
+echo "<html><head><meta http-equiv=\"refresh\" content=\"0;url=https://www.youtube.com/watch?v=QH2-TGUlwu4\"></head></html>" | sudo tee /var/www/html/redirect_me/index.html > /dev/null 2>&1
+echo "server {
+    listen 80;
+    server_name localhost;
+
+    location /redirect_me {
+        rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
+    }
+
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+}" | sudo tee /etc/nginx/sites-available/default > /dev/null 2>&1
+
+sudo /etc/init.d/nginx restart > /dev/null 2>&1
+
+echo "Nginx configured for redirection successfully!"

@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+
+sudo apt-get update
+
+sudo apt-get install -y nginx
+
+echo "Hello World!" | sudo tee /var/www/html/index.html
+echo "server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+}" | sudo tee /etc/nginx/sites-available/default
+
+sudo /etc/init.d/nginx restart
+
+echo "Nginx installed"
