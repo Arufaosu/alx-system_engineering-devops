@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # transfers a file from our client to a server
 
 if [ "$#" -lt 4 ]; then
@@ -12,3 +12,9 @@ USERNAME=$3
 SSH_KEY_PATH=$4
 
 scp -i "$path_ssh_key" -o "StrictHostKeyChecking no" "$path_file" "$username@$ip":~/
+
+if [ $? -eq 0 ]; then
+    echo "File transferred successfully."
+else
+    echo "File transfer failed."
+fi

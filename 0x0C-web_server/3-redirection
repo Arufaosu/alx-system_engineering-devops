@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # redirects to another page
 
 if ! command -v nginx &> /dev/null; then
