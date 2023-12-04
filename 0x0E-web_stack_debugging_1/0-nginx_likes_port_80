@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# configures a server
+
+apt-get update
+apt-get install -y nginx
+systemctl status nginx
+netstat -tulpn | grep :80
+echo "server {
+    listen 80;
+    server_name _;
+    location / {
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+    }
+}" > /etc/nginx/sites-available/default
+nginx -t
+systemctl restart nginx
+netstat -tulpn | grep :80
