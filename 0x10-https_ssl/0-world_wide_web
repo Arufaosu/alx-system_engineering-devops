@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# www points to your load-balancer IP
+
+get_dns_info() {
+    domain=$1
+    subdomain=$2
+
+    if [ -z "$subdomain" ]; then
+        subdomains=("www" "lb-01" "web-01" "web-02")
+    else
+        subdomains=("$subdomain")
+    fi
+
+    for sub in "${subdomains[@]}"; do
+        result=$(dig "$sub.$domain" | awk '/ANSWER SECTION/ {getline; print}')
+        record_type=$(echo "$result" | awk '{print $4}')
+        destination=$(echo "$result" | awk '{print $5}')
+        
+        echo "The subdomain $sub is a $record_type record and points to $destination"
+    done
+}
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+    echo "Usage: $0 <domain> [subdomain]"
+    exit 1
+fi
+get_dns_info "$1" "$2"
