@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # same as task 0 but shorter
-ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-service nginx start
-kill "$(pgrep 'nginx' | head -1)”
+apt-get update
+apt-get install -y nginx
+echo "server { listen 80; server_name _; location / { root /usr/share/nginx/html; index index.html index.htm; }}" > /etc/nginx/sites-available/default
+nginx -t
+systemctl restart nginx
