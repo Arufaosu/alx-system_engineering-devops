@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+sed -i 's/user\s*nginx;/user nginx;/' /etc/nginx/nginx.conf
+service nginx reload
+ps auxff | grep '[n]ginx'
+nc -z 0 8080
+echo "configuration completed"
