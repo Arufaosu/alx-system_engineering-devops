@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
-sed -i 's/user.*nginx;/user nginx;/' /etc/nginx/nginx.conf
+sed -i 's/user\s*nginx;/user nginx;/' /etc/nginx/nginx.conf
 service nginx reload
-ps auxff | grep '[n]ginx'
+
+if pgrep -x nginx > /dev/null; then
+    echo "Nginx is running"
+else
+    echo "Nginx is not running"
+fi
+
 nc -z 0 8080
-echo "configuration completed"
+echo "Configuration completed"
