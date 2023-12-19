@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
 sed -i 's/user\s*nginx;/user nginx;/' /etc/nginx/nginx.conf
-service nginx reload
-
-if pgrep -x nginx > /dev/null; then
-    echo "Nginx is running"
+sed -i 's/listen\s*80;/listen 8080;/' /etc/nginx/sites-available/default
+nginx -t
+if [ $? -eq 0 ]; then
+    service nginx reload
+    echo "Nginx configuration reloaded successfully."
 else
-    echo "Nginx is not running"
+    echo "Nginx configuration test failed. Please check your configuration."
 fi
-
-nc -z 0 8080
-echo "Configuration completed"
